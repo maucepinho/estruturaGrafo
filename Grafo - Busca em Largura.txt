@@ -1,0 +1,101 @@
+Esse código implementa um grafo usando a estrutura de dados *Map* do JavaScript para armazenar a lista de adjacência. O grafo é utilizado para representar a conexão entre províncias do Canadá. A função `bfs` realiza uma busca em largura a partir de um vértice inicial, retornando a ordem dos vértices visitados. Vamos explicar o código linha por linha:
+
+1. **`class Grafo {`**
+   Define a classe `Grafo`, que representa o grafo. Cada grafo é composto por vértices e arestas.
+
+2. **`private adjList: Map<string, string[]>;`**
+   Declara um atributo `adjList`, que é um `Map` onde a chave é uma string (nome de um vértice) e o valor é um array de strings (vértices adjacentes ao vértice chave).
+
+3. **`constructor() {`**
+   O construtor inicializa o grafo criando o `adjList` como um novo `Map`.
+
+4. **`this.adjList = new Map();`**
+   Inicializa a lista de adjacências do grafo. Um `Map` é uma coleção de pares chave-valor.
+
+5. **`addVertice(v: string): void {`**
+   Define um método `addVertice` que adiciona um vértice ao grafo. Um vértice é identificado por uma string (como "British Columbia").
+
+6. **`this.adjList.set(v, []);`**
+   Adiciona o vértice `v` ao `adjList` com um array vazio (sem adjacências inicialmente).
+
+7. **`addAresta(v1: string, v2: string): void {`**
+   Define o método `addAresta`, que cria uma aresta (conexão) entre dois vértices `v1` e `v2`.
+
+8. **`if (!this.adjList.has(v1)) { this.addVertice(v1); }`**
+   Verifica se o vértice `v1` existe no grafo. Caso não exista, ele é adicionado.
+
+9. **`if (!this.adjList.has(v2)) { this.addVertice(v2); }`**
+   Verifica da mesma forma para o vértice `v2`.
+
+10. **`this.adjList.get(v1)?.push(v2);`**
+    Adiciona `v2` à lista de adjacência de `v1`. Ou seja, adiciona uma aresta de `v1` para `v2`.
+
+11. **`this.adjList.get(v2)?.push(v1);`**
+    Faz o mesmo para o inverso, adicionando uma aresta de `v2` para `v1` (grafo não direcionado).
+
+12. **`bfs(inicio: string): string[] {`**
+    Define o método `bfs`, que executa uma busca em largura a partir do vértice `inicio`. O BFS (Breadth-First Search) é um algoritmo de busca que explora os vértices mais próximos primeiro, antes de explorar os mais distantes.
+
+13. **`let fila: string[] = [];`**
+    Cria uma fila (`fila`), usada para armazenar os vértices que ainda precisam ser visitados. A fila segue a lógica FIFO (First In, First Out).
+
+14. **`let visitados: Set<string> = new Set();`**
+    Cria um conjunto `visitados` para armazenar os vértices já visitados, evitando que o mesmo vértice seja visitado múltiplas vezes.
+
+15. **`let resultado: string[] = [];`**
+    Cria um array `resultado` para armazenar a ordem dos vértices visitados.
+
+16. **`fila.push(inicio);`**
+    Adiciona o vértice inicial à fila.
+
+17. **`visitados.add(inicio);`**
+    Marca o vértice inicial como visitado.
+
+18. **`while (fila.length > 0) {`**
+    Enquanto a fila não estiver vazia, o algoritmo continua visitando os vértices.
+
+19. **`let prov = fila.shift()!;`**
+    Remove o primeiro vértice da fila (seguindo a ordem FIFO) e o armazena na variável `prov`.
+
+20. **`resultado.push(prov);`**
+    Adiciona o vértice atual (`prov`) ao array `resultado`.
+
+21. **`for (let vizinho of this.adjList.get(prov)!) {`**
+    Para cada vizinho do vértice atual (`prov`), que são os vértices adjacentes.
+
+22. **`if (!visitados.has(vizinho)) {`**
+    Se o vizinho ainda não foi visitado, executa o bloco de código seguinte.
+
+23. **`visitados.add(vizinho);`**
+    Marca o vizinho como visitado.
+
+24. **`fila.push(vizinho);`**
+    Adiciona o vizinho à fila para ser visitado mais tarde.
+
+25. **`}`**
+    Fecha o loop sobre os vizinhos.
+
+26. **`}`**
+    Fecha o loop enquanto a fila não estiver vazia.
+
+27. **`return resultado;`**
+    Retorna o array `resultado`, que contém a ordem dos vértices visitados na busca em largura.
+
+28. **`}`**
+    Fecha o método `bfs`.
+
+29. **`let grafo = new Grafo();`**
+    Cria uma instância do grafo.
+
+30. **`grafo.addAresta('British Columbia', 'Yukon');`**
+    Adiciona uma aresta entre "British Columbia" e "Yukon" (conexão entre as províncias).
+
+31. **`console.log(grafo.bfs('Yukon'));`**
+    Chama o método `bfs` com "Yukon" como vértice inicial e imprime a ordem dos vértices visitados.
+
+### Conceitos matemáticos:
+
+- **Grafo**: Estrutura de dados que consiste em vértices (nós) e arestas (conexões entre os vértices).
+- **Lista de Adjacência**: Representação de um grafo em que cada vértice tem uma lista de seus vértices adjacentes.
+- **Busca em Largura (BFS)**: Algoritmo que explora os vértices de um grafo de maneira "em camadas", começando pelos vértices mais próximos do vértice inicial.
+- **Estruturas de Dados**: Como filas (FIFO) para a BFS e conjuntos para garantir que um vértice não seja visitado mais de uma vez.
